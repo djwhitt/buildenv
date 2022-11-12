@@ -7,18 +7,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       ##
-      ## Start notification
+      ## Send initial Slack notification
       ##
 
-      #- name: Notify Slack start
-      #  uses: voxmedia/github-action-slack-notify-build@v1
-      #  id: slack
-      #  with:
-      #    channel: builds
-      #    status: STARTING
-      #    color: warning
-      #  env:
-      #    SLACK_BOT_TOKEN: ${{ secrets.SLACK_NOTIFICATIONS_BOT_TOKEN }}
+      - name: Send Slack start notification
+        env:
+          SLACK_TITLE: Starting image build...
+          SLACK_WEBHOOK: ${{ secrets.SLACK_BUILDS_WEBHOOK }}
+        uses: rtCamp/action-slack-notify@v2
 
       ##
       ## Setup
@@ -46,40 +42,22 @@ jobs:
             ghcr.io/djwhitt/buildenv:latest
 
       ##
-      ## Completion notifications
+      ## Send Slack success/failure notification
       ##
 
-      # Updates existing message from the first step
-      #- name: Notify Slack success
-      #  if: success()
-      #  env:
-      #    SLACK_BOT_TOKEN: ${{ secrets.SLACK_NOTIFICATIONS_BOT_TOKEN }}
-      #  uses: voxmedia/github-action-slack-notify-build@v1
-      #  with:
-      #    message_id: ${{ steps.slack.outputs.message_id }}
-      #    channel: builds
-      #    status: SUCCESS
-      #    color: good
+      # Success
+      - name: Send Slack success notification
+        if: success()
+        env:
+          SLACK_TITLE: Image build succeeded!
+          SLACK_WEBHOOK: ${{ secrets.SLACK_BUILDS_WEBHOOK }}
+        uses: rtCamp/action-slack-notify@v2
 
-      # Updates existing message from the first step
-      #- name: Notify Slack failure
-      #  if: failure()
-      #  env:
-      #    SLACK_BOT_TOKEN: ${{ secrets.SLACK_NOTIFICATIONS_BOT_TOKEN }}
-      #  uses: voxmedia/github-action-slack-notify-build@v1
-      #  with:
-      #    message_id: ${{ steps.slack.outputs.message_id }}
-      #    channel: builds
-      #    status: FAILED
-      #    color: danger
-
-      # For notification purposes, send to a separate channel on failure
-      #- name: Notify Slack failure (build failures channel)
-      #  if: failure()
-      #  env:
-      #    SLACK_BOT_TOKEN: ${{ secrets.SLACK_NOTIFICATIONS_BOT_TOKEN }}
-      #  uses: voxmedia/github-action-slack-notify-build@v1
-      #  with:
-      #    channel: build-failures
-      #    status: FAILED
-      #    color: danger
+      # Failure
+      - name: Send Slack failure notification
+        if: failure()
+        env:
+          SLACK_TITLE: Image build failed!
+          SLACK_COLOR: danger
+          SLACK_WEBHOOK: ${{ secrets.SLACK_BUILD_FAILURES_WEBHOOK }}
+        uses: rtCamp/action-slack-notify@v2
