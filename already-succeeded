@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+[ "${CODEBUILD_RESOLVED_SOURCE_VERSION}" = "$(cat /root/last-success-version)" ]

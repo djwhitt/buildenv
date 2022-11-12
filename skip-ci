@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+git log --pretty=full -1 | grep '\[skip ci\]'

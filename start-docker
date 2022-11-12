@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+if [ -z "$DEBUG" ]; then
+    dockerd-entrypoint.sh >/dev/null 2>&1 &
+else
+    dockerd-entrypoint.sh &
+fi
+
+until docker info >/dev/null 2>&1; do sleep 1; done
