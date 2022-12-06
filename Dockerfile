@@ -5,13 +5,13 @@ RUN apk add --no-cache --update \
     bash \
     coreutils \
     curl \
+    docker-compose \
     git \
+    jq \
     nodejs \
     npm \
     openjdk11 \
-    shellcheck \
-    unzip \
-    yamllint
+    unzip
 
 # Download and install Nix and install
 ARG NIX_VERSION=2.3.14
