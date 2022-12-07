@@ -11,6 +11,7 @@ RUN apk add --no-cache --update \
     nodejs \
     npm \
     openjdk11 \
+    sqlite \
     unzip
 
 # Download and install Nix and install
