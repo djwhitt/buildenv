@@ -1,7 +1,6 @@
 FROM docker:dind
 
 RUN apk add --no-cache --update \
-    aws-cli \
     bash \
     coreutils \
     curl \
@@ -11,8 +10,13 @@ RUN apk add --no-cache --update \
     nodejs \
     npm \
     openjdk11 \
+    py3-pip \
+    python3 \
     sqlite \
     unzip
+
+# Install the AWS CLI
+RUN pip3 install awscli
 
 # Download and install Nix and install
 ARG NIX_VERSION=2.3.14
